@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
-
-import 'Studentpass.dart';
-
+import 'widgets/navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Studentpass(),
-      //home: LoginSignupScreen(),
+      home: Navigation(initialIndex: 0),
     );
   }
 }
