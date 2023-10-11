@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "264802098002",
+    "project_id": "bushub-29406",
+    "storage_bucket": "bushub-29406.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264802098002:android:666a62d61eb40be16c788b",
+        "android_client_info": {
+          "package_name": "com.example.bus_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChFwJcoVuQmUcPD4vZQLMeKQrMdYDcueA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
