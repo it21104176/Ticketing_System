@@ -2,6 +2,7 @@ import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 
@@ -161,7 +162,7 @@ class _StudentpassState extends State<Studentpass> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    TextFormField(
+                    TextField(
                       controller: _StartdateController,
                       decoration: InputDecoration(
                         labelText: 'Start Date : ',
@@ -182,7 +183,7 @@ class _StudentpassState extends State<Studentpass> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    TextFormField(
+                    TextField(
                       controller: _EnddateController,
                       decoration: InputDecoration(
                         labelText: 'Start Date : ',
@@ -271,7 +272,7 @@ class _StudentpassState extends State<Studentpass> {
                                 ),
                               ),
                               SizedBox(height: 8.0),
-                              TextFormField(
+                              TextField(
                                 controller: _CardNameController,
                                 decoration: InputDecoration(
                                   labelText: 'P.B.N.Nawod',
@@ -287,12 +288,16 @@ class _StudentpassState extends State<Studentpass> {
                                 ),
                               ),
                               SizedBox(height: 8.0),
-                              TextFormField(
+                              TextField(
                                 controller: _CardNoController,
                                 decoration: InputDecoration(
                                   labelText: '0300 xxxx xxxx xx',
                                   border: OutlineInputBorder(),
                                 ),
+                                keyboardType: TextInputType.number, // Allow only numeric input
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(12), // Limit input to 3 characters
+                                ],
                               ),
                               SizedBox(height: 20.0),
                               Row(
@@ -309,7 +314,7 @@ class _StudentpassState extends State<Studentpass> {
                                           ),
                                         ),
                                         SizedBox(height: 8.0),
-                                        TextFormField(
+                                        TextField(
                                           controller: _ExpDController,
                                           decoration: InputDecoration(
                                             labelText: 'Exp Date (MM/YY)',
@@ -332,22 +337,30 @@ class _StudentpassState extends State<Studentpass> {
                                           ),
                                         ),
                                         SizedBox(height: 8.0),
-                                        TextFormField(
+                                        TextField(
                                           controller: _CvvController,
                                           decoration: InputDecoration(
-                                            labelText: '7**',
+                                            labelText: '3-digit CVV',
                                             border: OutlineInputBorder(),
                                           ),
+                                          keyboardType: TextInputType.number, // Allow only numeric input
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(3), // Limit input to 3 characters
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
+
                                 ],
                               ),
                               SizedBox(height: 32.0),
-                              Align(
-                                alignment: Alignment.center,
+                              Center(
                                 child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(150, 50),
+                                  ),
+                                  child: const Text('Submit'),
                                   onPressed: () async {
                                     final String sdate = _StartdateController.text;
                                     final String edate = _EnddateController.text;
@@ -356,15 +369,16 @@ class _StudentpassState extends State<Studentpass> {
                                     final String expd = _ExpDController.text;
                                     final String cvv = _CvvController.text;
 
-                                    if (sdate.isNotEmpty) {
+                                    if (sdate.isNotEmpty &&
+                                        edate.isNotEmpty) {
                                       await _poiCollection.add({
                                         "SDate": sdate,
                                         "EDate": edate,
                                         "route": selectedRoute,
-                                        "CName":cname,
-                                        "CNo":cno,
-                                        "CVV":cvv,
-                                        "ExpD":expd,
+                                        "CName": cname,
+                                        "CNo": cno,
+                                        "CVV": cvv,
+                                        "ExpD": expd,
                                       });
 
                                       _StartdateController.text = '';
@@ -374,24 +388,17 @@ class _StudentpassState extends State<Studentpass> {
                                       _ExpDController.text = '';
                                       _CvvController.text = '';
 
-                                      Navigator.of(context).pop();
 
-                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                        content: Text('You have successfully Created !!! '),
-                                      ));
-
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('You have successfully Created !!! '),
+                                        ),
+                                      );
                                       _showPaymentSuccessDialog(context);
                                     }
                                   },
-                                  child: const Text(
-                                    'Submit',
-                                    style: TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
