@@ -1,3 +1,5 @@
+import 'package:bus_hub/screens/Studentpass.dart';
+import 'package:bus_hub/services/authservice.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -8,9 +10,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Column(
@@ -20,6 +23,22 @@ class _ProfileState extends State<Profile> {
               'Profile Screen',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Studentpass(),
+                  ),
+                );
+              },
+              child: const Text('Student Pass'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              child: const Text('Logout'),
+            )
           ],
         ),
       ),
