@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/StudentProfile.dart';
 import '../screens/home.dart';
 import 'package:bus_hub/screens/rides.dart';
 import 'package:bus_hub/screens/qr.dart';
@@ -21,7 +22,7 @@ class _NavigationState extends State<Navigation> {
     const Home(),
     const Rides(),
     const QR(),
-    const Profile()
+    StudentProfile(userName: 'Ravi Kumara', userEmail: 'ravikumara@gmail.com',),
   ];
 
   @override
