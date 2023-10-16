@@ -33,3 +33,10 @@ const txtInputDeco = InputDecoration(
     ),
   ),
 );
+
+const txtInputDeco2 = InputDecoration(
+  labelText: 'Email',
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+  ),
+);

@@ -1,12 +1,14 @@
 import 'package:bus_hub/constants/colors.dart';
 import 'package:bus_hub/constants/styles.dart';
 import 'package:bus_hub/constants/text.dart';
+import 'package:bus_hub/screens/UserTypeSelection.dart';
 import 'package:bus_hub/services/authservice.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  final Function toggle;
-  const Login({Key? key, required this.toggle}) : super(key: key);
+  //final Function toggle;
+  //const Login({Key? key, required this.toggle}) : super(key: key);
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -26,21 +28,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("BUSHUB"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              Container(
-                child: const Text(
-                  logo,
-                  style: descBStyle,
-                ),
-              ),
               const SizedBox(height: 50),
               Align(
                 alignment: Alignment.centerLeft,
@@ -69,7 +64,7 @@ class _LoginState extends State<Login> {
                       children: [
                         // email
                         TextFormField(
-                          decoration: txtInputDeco,
+                          decoration: txtInputDeco2,
                           validator: (value) => value?.isEmpty == true
                               ? "Enter a valid email"
                               : null,
@@ -84,7 +79,7 @@ class _LoginState extends State<Login> {
                         TextFormField(
                           obscureText: true,
                           decoration:
-                              txtInputDeco.copyWith(hintText: "Password"),
+                              txtInputDeco2.copyWith(labelText: "Password"),
                           validator: (value) => value!.length < 6
                               ? "Enter a valid password"
                               : null,
@@ -102,22 +97,6 @@ class _LoginState extends State<Login> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          "Login with Social accounts",
-                          style: descStyle,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Image.asset(
-                              'assets/images/google.png',
-                              height: 50,
-                            ),
-                          ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -130,7 +109,11 @@ class _LoginState extends State<Login> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                widget.toggle();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => UserTypeSelection(),
+                                  ),
+                                );
                               },
                               child: const Text(
                                 "Register",
@@ -209,18 +192,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-
-
-// body: ElevatedButton(
-//         child: const Text("Login Anonymously"),
-//         onPressed: () async {
-//           dynamic result = await _auth.signInAnonymous();
-//           if (result == null) {
-//             print("Error signing anonymous!");
-//           } else {
-//             print("Anonymous signing success!");
-//             print(result.uid);
-//           }
-//         },
-//       ),
