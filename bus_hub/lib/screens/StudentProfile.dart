@@ -1,7 +1,9 @@
 import 'package:bus_hub/screens/Studentpass.dart';
+import 'package:bus_hub/services/authservice.dart';
 import 'package:flutter/material.dart';
 
 class StudentProfile extends StatelessWidget {
+  final AuthService _auth = AuthService();
   final String userName;
   final String userEmail;
 
@@ -21,7 +23,8 @@ class StudentProfile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('assets/images/profile.png'), // Add your image
+                  backgroundImage:
+                      AssetImage('assets/images/profile.png'), // Add your image
                 ),
                 SizedBox(height: 20),
                 Text('Name: $userName', style: TextStyle(fontSize: 20)),
@@ -61,7 +64,8 @@ class StudentProfile extends StatelessWidget {
                   title: Text('Student Pass'),
                   trailing: Icon(Icons.chevron_right), // Arrowhead icon
                   onTap: () {
-                    Navigator.push(context,
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
                         builder: (context) => Studentpass(),
                       ),
@@ -88,8 +92,8 @@ class StudentProfile extends StatelessWidget {
                   leading: Icon(Icons.logout), // Add your icon here
                   title: Text('Log Out'),
                   trailing: Icon(Icons.chevron_right), // Arrowhead icon
-                  onTap: () {
-                    // Implement your logout logic here
+                  onTap: () async {
+                    await _auth.signOut();
                   },
                 ),
               ],

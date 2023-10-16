@@ -1,5 +1,6 @@
 import 'package:bus_hub/models/user.dart';
 import 'package:bus_hub/screens/auth/auth.dart';
+import 'package:bus_hub/screens/auth/login.dart';
 import 'package:bus_hub/widgets/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class Wrapper extends StatelessWidget {
 
     if (user == null) {
       // If the user is not authenticated
-      return const Auth();
+      return const Login();
     } else {
       // If the user is authenticated
       return const Navigation(

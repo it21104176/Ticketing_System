@@ -38,6 +38,8 @@ dependencies:
   firebase_database: ^10.2.5
   intl: ^0.18.1
   provider: ^6.0.5
+  image_picker: ^1.0.4
+  firebase_storage: ^11.2.8
   flutter_paypal_checkout: ^1.0.1
   flutter_paypal: ^0.2.0
   faker: ^2.1.0

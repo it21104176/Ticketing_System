@@ -1,62 +1,44 @@
+import 'package:bus_hub/screens/UserTypeSelection.dart';
 import 'package:flutter/material.dart';
-
+import 'package:bus_hub/screens/nic_upload.dart';
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
-import '../../constants/text.dart';
 import '../../services/authservice.dart';
 
 class Register extends StatefulWidget {
-  final Function toggle;
-  const Register({Key? key, required this.toggle}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  // reference for the AuhtService
   final AuthService _auth = AuthService();
-
-  // form key
   final _formKey = GlobalKey<FormState>();
-  // define states
+
   String email = "";
+  String nic = "";
   String password = "";
+  String confirmPassword = "";
   String error = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
       appBar: AppBar(
-        title: const Text("Register"),
+        title: const Text("BUSHUB"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              Container(
-                child: const Text(
-                  logo,
-                  style: descBStyle,
-                ),
-              ),
               const SizedBox(height: 50),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
                   child: const Text(
-                    "Welcome!",
-                    style: greet,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  child: const Text(
-                    "Sign Up",
+                    "User Details",
                     style: descBStyle,
                   ),
                 ),
@@ -65,121 +47,109 @@ class _RegisterState extends State<Register> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        // email
-                        TextFormField(
-                          decoration: txtInputDeco,
-                          validator: (value) => value?.isEmpty == true
-                              ? "Enter a valid email"
-                              : null,
-                          onChanged: (value) {
-                            setState(() {
-                              email = value;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        // password
-                        TextFormField(
-                          obscureText: true,
-                          decoration:
-                              txtInputDeco.copyWith(hintText: "Password"),
-                          validator: (value) => value!.length < 6
-                              ? "Enter a valid password"
-                              : null,
-                          onChanged: (value) {
-                            setState(() {
-                              password = value;
-                            });
-                          },
-                        ),
-                        // google
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          error,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        const Text(
-                          "Login with Social accounts",
-                          style: descStyle,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Image.asset(
-                              'assets/images/google.png',
-                              height: 50,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Already have an account?",
-                              style: descStyle,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                widget.toggle();
-                              },
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: mainBlue,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // button
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // email
+                      TextFormField(
+                        decoration: txtInputDeco2,
+                        validator: (value) => value?.isEmpty == true
+                            ? "Enter a valid email"
+                            : null,
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
 
-                            if (result == null) {
-                              setState(() {
-                                error = "please enter a valid email";
-                              });
-                            }
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(100),
-                                border:
-                                    Border.all(width: 2, color: mainYellow)),
-                            child: const Center(
-                                child: Text(
-                              "Register",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            )),
+                      // NIC field
+                      TextFormField(
+                        decoration: txtInputDeco2.copyWith(labelText: "NIC"),
+                        validator: (value) =>
+                            value?.isEmpty == true ? "Enter a valid NIC" : null,
+                        onChanged: (value) {
+                          setState(() {
+                            nic = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      // password
+                      TextFormField(
+                        obscureText: true,
+                        decoration:
+                            txtInputDeco2.copyWith(labelText: "Password"),
+                        validator: (value) =>
+                            value!.length < 6 ? "Enter a valid password" : null,
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Password confirmation field
+                      TextFormField(
+                        obscureText: true,
+                        decoration: txtInputDeco2.copyWith(
+                            labelText: "Confirm Password"),
+                        validator: (value) =>
+                            value != password ? "Passwords do not match" : null,
+                        onChanged: (value) {
+                          setState(() {
+                            confirmPassword = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 128.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => UserTypeSelection(),
+                                  ));
+                                },
+                                child: Text("Back"),
+                              ),
+                              // Next button
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => NICUpload(
+                                          email: email,
+                                          password: password,
+                                          nic: nic,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Text("Next"),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    )),
+                      )
+                    ],
+                  ),
+                ),
               )
             ],
           ),
