@@ -1,4 +1,3 @@
-import 'package:bus_hub/screens/auth/login.dart';
 import 'package:bus_hub/screens/home.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String nic = "";
   String email = "";
@@ -28,10 +26,19 @@ class _RegisterState extends State<Register> {
   File? _image;
   int _currentStep = 0;
 
+  _RegisterState() {
+    // Initialize the AuthService and ImagePicker as Singleton instances
+    _auth = AuthService();
+    _imagePicker = ImagePicker();
+  }
+
+  late AuthService _auth;
+  late ImagePicker _imagePicker;
+
   // Function to pick an image from the gallery
   Future<void> _pickImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
