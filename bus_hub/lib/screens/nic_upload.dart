@@ -1,133 +1,204 @@
-import 'dart:io';
+// // import 'package:bus_hub/screens/auth/login.dart';
+// import 'package:bus_hub/screens/auth/register.dart';
+// import 'package:bus_hub/screens/home.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../services/authservice.dart';
+// import '../../constants/colors.dart';
+// import '../../constants/styles.dart';
+// import '../../services/authservice.dart';
 
-class NICUpload extends StatefulWidget {
-  final String email;
-  final String password;
-  final String nic;
+// class NewScreen extends StatefulWidget {
+//   const NewScreen({Key? key}) : super(key: key);
 
-  NICUpload({
-    required this.email,
-    required this.password,
-    required this.nic,
-  });
+//   @override
+//   State<NewScreen> createState() => _NewScreenState();
+// }
 
-  @override
-  _NICUploadState createState() => _NICUploadState();
-}
+// class _NewScreenState extends State<NewScreen> {
+//   final AuthService _auth = AuthService();
+//   String nic = "";
+//   String email = "";
+//   String password = "";
+//   String confirmPassword = "";
+//   String error = "";
+//   File? _image;
 
-class _NICUploadState extends State<NICUpload> {
-  final picker = ImagePicker();
-  XFile? _image; // Change PickedFile to XFile
-  bool isUploading = false;
-  final _auth = AuthService();
+//   // Function to pick an image from the gallery
+//   Future<void> _pickImage() async {
+//     final pickedFile =
+//         await ImagePicker().pickImage(source: ImageSource.gallery);
+//     if (pickedFile != null) {
+//       setState(() {
+//         _image = File(pickedFile.path);
+//       });
+//     }
+//   }
 
-  Future pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+//   Future<void> _uploadImageAndRegister() async {
+//     try {
+//       // Check if an image is selected
+//       if (_image != null) {
+//         // Get a reference to the Firebase Storage bucket
+//         final storageRef = FirebaseStorage.instance
+//             .ref()
+//             .child('profile_pictures/${nic}_profile.jpg');
 
-    if (pickedFile != null) {
-      setState(() {
-        _image = pickedFile;
-      });
-    }
-  }
+//         // Upload the image to Firebase Storage
+//         final UploadTask uploadTask = storageRef.putFile(_image!);
 
-  Future uploadImage() async {
-    if (_image == null) {
-      // Handle the case where no image is selected.
-      return;
-    }
+//         // Get the download URL of the uploaded image
+//         final TaskSnapshot taskSnapshot = await uploadTask;
+//         final String profilePictureUrl =
+//             await taskSnapshot.ref.getDownloadURL();
 
-    setState(() {
-      isUploading = true;
-    });
+//         // Register the user with name, email, and profile picture URL
+//         dynamic result = await _auth.registerWithEmailAndPassword(
+//             nic, email, password, profilePictureUrl);
 
-    final firebaseStorage = FirebaseStorage.instance;
-    final user = FirebaseAuth.instance.currentUser;
-    final ref =
-        firebaseStorage.ref().child('user_images/${user!.uid}/nic_image.jpg');
+//         if (result == null) {
+//           setState(() {
+//             error = "Please enter valid information.";
+//           });
+//         } else {
+//           Navigator.of(context).push(
+//             MaterialPageRoute(
+//               builder: (context) => Home(),
+//             ),
+//           );
+//         }
+//       }
+//     } catch (error) {
+//       print(error.toString());
+//     }
+//   }
 
-    await ref.putFile(File(_image!.path));
-
-    final imageUrl = await ref.getDownloadURL();
-
-    await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
-      'nic_image_url': imageUrl,
-    });
-
-    dynamic result = await _auth.registerWithEmailAndPassword(
-      widget.email,
-      widget.password,
-      widget.nic,
-      imageUrl,
-    );
-
-    if (result != null) {
-      // Registration successful
-      // Navigate to the next screen or perform any other actions.
-    } else {
-      // Registration failed, handle the error.
-      setState(() {
-        isUploading = false;
-      });
-      // You can display an error message or handle the failure as needed.
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Upload NIC Photo"),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "Upload a photo of ",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "your NIC card",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "please upload a clear image",
-                style: TextStyle(fontSize: 16, color: Colors.grey.shade500),
-              ),
-              SizedBox(height: 20),
-              if (_image != null)
-                Image.file(
-                  File(_image!.path),
-                  width: 200,
-                  height: 200,
-                ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => pickImage(),
-                child: Text("Pick Image"),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => uploadImage(),
-                child: isUploading
-                    ? CircularProgressIndicator()
-                    : Text("Register"),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Upload NIC Card"),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Align(
+//               alignment: Alignment.centerLeft,
+//               child: Container(
+//                 child: const Text(
+//                   "Upload a photo of your NIC card",
+//                   style: descBStyle,
+//                 ),
+//               ),
+//             ),
+//             Align(
+//               alignment: Alignment.centerLeft,
+//               child: Container(
+//                 child: const Text(
+//                   "please upload a clear image",
+//                   style: TextStyle(fontSize: 16, color: Colors.grey),
+//                 ),
+//               ),
+//             ),
+//             // Profile picture upload
+//             const SizedBox(height: 50),
+//             GestureDetector(
+//               onTap: _pickImage,
+//               child: _image == null
+//                   ? Container(
+//                       height: 150,
+//                       width: 250,
+//                       decoration: BoxDecoration(
+//                         color: Color.fromARGB(255, 222, 240, 249),
+//                         borderRadius: BorderRadius.circular(10),
+//                       ),
+//                       child: const Center(
+//                         child: Column(
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           children: [
+//                             Icon(
+//                               Icons.cloud_upload,
+//                               size: 50,
+//                               color: primary,
+//                             ),
+//                             SizedBox(height: 10),
+//                             Text(
+//                               'Upload document here',
+//                               style: TextStyle(
+//                                 color: primary,
+//                                 fontSize: 16,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     )
+//                   : Container(
+//                       height: 150,
+//                       width: 250,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         borderRadius: BorderRadius.circular(10),
+//                         border: Border.all(width: 2, color: secondary),
+//                         image: DecorationImage(
+//                           image: FileImage(_image!),
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//             ),
+//             const SizedBox(height: 50),
+//             // Button Row
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 OutlinedButton(
+//                   onPressed: () {
+//                     Navigator.of(context).push(
+//                       MaterialPageRoute(
+//                         builder: (context) => Register(),
+//                       ),
+//                     );
+//                   },
+//                   child: const Text(
+//                     "Back",
+//                     style: TextStyle(
+//                       fontSize: 18,
+//                       color: primary,
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                     if (password != confirmPassword) {
+//                       setState(() {
+//                         error = "Passwords do not match";
+//                       });
+//                     } else {
+//                       _uploadImageAndRegister();
+//                     }
+//                   },
+//                   style: ButtonStyle(
+//                     backgroundColor: MaterialStateProperty.all(primary),
+//                   ),
+//                   child: const Text(
+//                     "Next",
+//                     style: TextStyle(
+//                       fontSize: 18,
+//                       color: Colors.white,
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

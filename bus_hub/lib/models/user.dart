@@ -2,5 +2,13 @@
 
 class UserModel {
   final String uid;
-  UserModel({required this.uid});
+  final String nic;
+  final String email;
+  final String profilePictureUrl;
+
+  UserModel(
+      {required this.uid,
+      required this.nic,
+      required this.email,
+      required this.profilePictureUrl});
 }

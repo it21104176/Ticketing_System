@@ -22,9 +22,9 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 200),
+              SizedBox(height: 180),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -51,25 +51,28 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
                     ),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    underline: Container(),
-                    value: selectedUserType,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Local"),
-                        value: "Local",
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Foreigner"),
-                        value: "Foreigner",
-                      ),
-                    ],
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedUserType = value;
-                      });
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      underline: Container(),
+                      value: selectedUserType,
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Local"),
+                          value: "Local",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Foreigner"),
+                          value: "Foreigner",
+                        ),
+                      ],
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedUserType = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),

@@ -2,13 +2,14 @@ import 'package:bus_hub/constants/colors.dart';
 import 'package:bus_hub/constants/styles.dart';
 import 'package:bus_hub/constants/text.dart';
 import 'package:bus_hub/screens/UserTypeSelection.dart';
-import 'package:bus_hub/services/authservice.dart';
+import '../../services/authservice.dart';
 import 'package:flutter/material.dart';
 
+// import '../AdminH.dart';
+import '../home.dart';
+
 class Login extends StatefulWidget {
-  //final Function toggle;
-  //const Login({Key? key, required this.toggle}) : super(key: key);
-  const Login({super.key});
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -28,14 +29,21 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("BUSHUB"),
+        title: const Text("Login"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
+              Container(
+                child: const Text(
+                  logo,
+                  style: descBStyle,
+                ),
+              ),
               const SizedBox(height: 50),
               Align(
                 alignment: Alignment.centerLeft,
@@ -64,7 +72,8 @@ class _LoginState extends State<Login> {
                       children: [
                         // email
                         TextFormField(
-                          decoration: txtInputDeco2,
+                          decoration:
+                              txtInputDeco2.copyWith(labelText: "Email"),
                           validator: (value) => value?.isEmpty == true
                               ? "Enter a valid email"
                               : null,
@@ -118,7 +127,7 @@ class _LoginState extends State<Login> {
                               child: const Text(
                                 "Register",
                                 style: TextStyle(
-                                    color: mainBlue,
+                                    color: primary,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
@@ -137,21 +146,37 @@ class _LoginState extends State<Login> {
                               setState(() {
                                 error = "Invalid email or password";
                               });
+                            } else {
+                              // Check if the user's email is 'admin@gmail.com'
+                              if (email == 'admin@gmail.com' &&
+                                  password == 'admin123') {
+                                // Navigator.of(context).pushReplacement(
+                                //   // Use pushReplacement to replace the current page.
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         AdminHomePage(), // Replace AdminHomePage with your actual admin home page.
+                                //   ),
+                                // );
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                  // Use pushReplacement to replace the current page.
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        Home(), // Replace AdminHomePage with your actual admin home page.
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Container(
                             height: 50,
                             width: 200,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(100),
-                                border:
-                                    Border.all(width: 2, color: mainYellow)),
+                            decoration: buttonDeco,
                             child: const Center(
                                 child: Text(
                               "Login",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500),
                             )),
@@ -167,16 +192,12 @@ class _LoginState extends State<Login> {
                           child: Container(
                             height: 50,
                             width: 200,
-                            decoration: BoxDecoration(
-                                color: textLight,
-                                borderRadius: BorderRadius.circular(100),
-                                border:
-                                    Border.all(width: 2, color: mainYellow)),
+                            decoration: buttonDeco,
                             child: const Center(
                                 child: Text(
                               "Login as Guest",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500),
                             )),

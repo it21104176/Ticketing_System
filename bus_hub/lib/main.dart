@@ -11,24 +11,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: const Wrapper(),
-//     );
-//   }
-// }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return StreamProvider<UserModel?>.value(
-      initialData: UserModel(uid: ""),
+      initialData:
+          UserModel(uid: "", nic: '', email: '', profilePictureUrl: ''),
       value: AuthService().user,
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

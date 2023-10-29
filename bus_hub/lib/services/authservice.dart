@@ -1,15 +1,16 @@
-import 'package:bus_hub/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bus_hub/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   // firebase instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // create a user from firebase user with uid
   UserModel? _userWithFirebaseUserUid(User? user) {
-    return user != null ? UserModel(uid: user.uid) : null;
+    return user != null
+        ? UserModel(uid: user.uid, nic: '', email: '', profilePictureUrl: '')
+        : null;
   }
 
   // create the stream for checking the auth changes in the user
@@ -30,33 +31,25 @@ class AuthService {
   }
 
   // register using using email & password
-  Future registerWithEmailAndPassword(
-      String email, String password, String nic, String nicImageUrl) async {
+  Future registerWithEmailAndPassword(String nic, String email, String password,
+      String profilePictureUrl) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
 
       if (user != null) {
-        await _createUserProfile(user.uid, email, nic, nicImageUrl);
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'email': email,
+          'nic': nic,
+          'profilePicture': profilePictureUrl,
+        });
+
+        return _userWithFirebaseUserUid(user);
       }
-      return _userWithFirebaseUserUid(user);
     } catch (error) {
       print(error.toString());
       return null;
-    }
-  }
-
-  Future _createUserProfile(
-      String uid, String email, String nic, String nicImageUrl) async {
-    try {
-      await _firestore.collection('users').doc(uid).set({
-        'email': email,
-        'nic': nic,
-        'nic_image_url': nicImageUrl, // Store the NIC image URL
-      });
-    } catch (error) {
-      print(error.toString());
     }
   }
 
