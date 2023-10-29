@@ -128,6 +128,7 @@ class _LoginState extends State<Login> {
                                 "Register",
                                 style: TextStyle(
                                     color: primary,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
@@ -135,7 +136,7 @@ class _LoginState extends State<Login> {
                         ),
                         // button
                         const SizedBox(
-                          height: 20,
+                          height: 80,
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -185,24 +186,24 @@ class _LoginState extends State<Login> {
                         const SizedBox(
                           height: 20,
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            dynamic result = await _auth.signInAnonymous();
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: buttonDeco,
-                            child: const Center(
-                                child: Text(
-                              "Login as Guest",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                          ),
-                        )
+                        // GestureDetector(
+                        //   onTap: () async {
+                        //     dynamic result = await _auth.signInAnonymous();
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     width: 200,
+                        //     decoration: buttonDeco,
+                        //     child: const Center(
+                        //         child: Text(
+                        //       "Login as Guest",
+                        //       style: TextStyle(
+                        //           fontSize: 18,
+                        //           color: Colors.white,
+                        //           fontWeight: FontWeight.w500),
+                        //     )),
+                        //   ),
+                        // )
                       ],
                     )),
               )
