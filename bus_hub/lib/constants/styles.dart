@@ -37,6 +37,17 @@ const txtInputDeco = InputDecoration(
 const txtInputDeco2 = InputDecoration(
   labelText: 'Email',
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+  ),
+);
+
+const buttonBorderRadius = BorderRadius.all(Radius.circular(20.0));
+
+const buttonDeco = BoxDecoration(
+  borderRadius: buttonBorderRadius,
+  gradient: LinearGradient(
+    colors: [primary, secondary],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
   ),
 );
